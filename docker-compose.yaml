@@ -1,0 +1,16 @@
+version: '3'
+services:
+  dev-database:
+    image: postgres:13
+    container_name: dev-database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=quang7204
+      - POSTGRES_DB=bank
+    networks:
+      - nestjs-network
+networks:
+  nestjs-network:
+  
