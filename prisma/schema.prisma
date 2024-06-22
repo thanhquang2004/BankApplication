@@ -8,36 +8,36 @@ datasource db {
 }
 
 model Customer {
-  id Int       @id @default(autoincrement())
-  fullName   String
-  dateOfBirth DateTime?
-  email      String    @unique
+  id             Int       @id @default(autoincrement())
+  fullName       String
+  dateOfBirth    DateTime?
+  email          String    @unique
   hashedPassword String
-  phoneNumber String?
-  address    String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  Accounts   Account[]
+  phoneNumber    String?
+  address        String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  Accounts       Account[]
 }
 
 model Account {
-  id   Int       @id @default(autoincrement())
-  accountNumber String   @unique
-  customerId  Int
-  balance     Float     @default(0.0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  Customer    Customer  @relation(fields: [customerId], references: [id])
-  Transactions Transaction[]
+  id            Int           @id @default(autoincrement())
+  accountNumber String        @unique
+  customerId    Int
+  balance       Float         @default(0.0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Customer      Customer      @relation(fields: [customerId], references: [id])
+  Transactions  Transaction[]
 }
 
 model Transaction {
-  id   Int       @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   accountId       Int
-  toAccountId     Int
+  toAccountNumber String?
   transactionType String
   amount          Float
-  transactionDate DateTime  @default(now())
+  transactionDate DateTime @default(now())
   description     String?
-  Account         Account   @relation(fields: [accountId], references: [id])
+  Account         Account  @relation(fields: [accountId], references: [id])
 }

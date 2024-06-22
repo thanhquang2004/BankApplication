@@ -33,23 +33,53 @@ export class AccountsService {
     });
   }
 
-  findAll(customerId: number) {
-    return this.prismaService.account.findMany({
+  async generateAccountNumber() {
+    const generatedAccountNumber = await Math.floor(
+      10000000 + Math.random() * 9000000,
+    ).toString();
+
+    const existAccountNumber = await this.prismaService.account.findUnique({
+      where: { accountNumber: generatedAccountNumber },
+    });
+
+    if (existAccountNumber) {
+      return this.generateAccountNumber();
+    }
+
+    return { generatedAccountNumber };
+  }
+
+  async findAll(customerId: number) {
+    return await this.prismaService.account.findMany({
       where: {
         customerId,
       },
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findOne(id: number, customerId: number) {
+    return await this.prismaService.account.findUnique({
+      where: {
+        id,
+        customerId,
+      },
+    });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} account`;
+  async findOneByAccountNumber(accountNumber: any) {
+    return await this.prismaService.account.findUnique({
+      where: {
+        accountNumber: accountNumber.accountNumber,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: number, customerId: number) {
+    return await this.prismaService.account.delete({
+      where: {
+        id,
+        customerId,
+      },
+    });
   }
 }

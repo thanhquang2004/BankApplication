@@ -16,6 +16,9 @@ export class RefreshJwtStrategy extends PassportStrategy(
     });
   }
   validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+    const user = {
+      ...payload,
+    };
+    return user;
   }
 }

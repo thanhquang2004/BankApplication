@@ -46,11 +46,14 @@ export class AuthService {
   }
 
   async login(user: Customer) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      fullName: user.fullName,
-    };
+    console.log(user);
+    const { hashedPassword, ...payload } = user;
+    hashedPassword;
+    // const payload = {
+    //   sub: user.id,
+    //   email: user.email,
+    //   fullName: user.fullName,
+    // };
 
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '7d',
@@ -65,11 +68,15 @@ export class AuthService {
   }
 
   async refresh(user: any) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      fullName: user.fullName,
-    };
+    const { hashedPassword, ...payload } = user;
+    hashedPassword;
+    // const payload = {
+    //   sub: user.id,
+    //   email: user.email,
+    //   fullName: user.fullName,
+    // };
+    delete payload.iat;
+    delete payload.exp;
 
     const accessToken = this.jwtService.sign(payload);
 
