@@ -12,11 +12,13 @@ export class CustomersService {
   }
 
   async getMe(id: number) {
-    return await this.prismaService.customer.findUnique({
+    const customer = await this.prismaService.customer.findUnique({
       where: {
         id,
       },
     });
+    delete customer.hashedPassword;
+    return customer;
   }
 
   async findOne(id: number) {
