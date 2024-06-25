@@ -10,10 +10,18 @@ import {
 import { CustomersService } from './customers.service';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/auth/current-user-decorator';
+import { Customer } from '@prisma/client';
 
 @Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  getMe(@CurrentUser() user: Customer) {
+    return this.customersService.getMe(user.id);
+  }
 
   @Get()
   @UseGuards(JwtAuthGuard)

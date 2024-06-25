@@ -11,6 +11,14 @@ export class CustomersService {
     return await this.prismaService.customer.findMany();
   }
 
+  async getMe(id: number) {
+    return await this.prismaService.customer.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async findOne(id: number) {
     return await this.prismaService.customer.findUnique({
       where: {
