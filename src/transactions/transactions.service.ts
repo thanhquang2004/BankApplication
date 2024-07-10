@@ -135,7 +135,7 @@ export class TransactionsService {
     return await this.prismaService.transaction.create({
       data: {
         amount: +createTransactionDto.amount,
-        transactionType: 'WITHDRAW',
+        transactionType: 'DEPOSIT',
         accountId: +account.id,
       },
     });
@@ -169,6 +169,32 @@ export class TransactionsService {
 
   async findOne(id: number) {
     return this.prismaService.transaction.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findManyByAccountNumber(accountNumber: string) {
+    const account = await this.prismaService.account.findUnique({
+      where: {
+        id: +accountNumber,
+      },
+    });
+
+    if (!account) {
+      throw new ForbiddenException('Account not found');
+    }
+
+
+    return this.prismaService.transaction.findMany({
+      where: {
+        toAccountNumber: accountNumber,
+      },
+    });
+  }
+  async delete(id: number) {
+    return this.prismaService.transaction.delete({
       where: {
         id,
       },

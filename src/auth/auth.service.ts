@@ -15,12 +15,13 @@ export class AuthService {
   ) {}
 
   async register(createAuthDto: CreateAuthDto) {
-    const existingUser = this.prismaService.customer.findUnique({
+    const existingUser = await this.prismaService.customer.findUnique({
       where: {
         email: createAuthDto.email,
       },
     });
-    if (!existingUser) {
+    console.log(existingUser);
+    if ( existingUser) {
       throw new UnprocessableEntityException('User already exists');
     }
 
