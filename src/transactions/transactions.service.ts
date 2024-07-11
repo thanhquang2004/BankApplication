@@ -52,6 +52,17 @@ export class TransactionsService {
       },
     });
 
+    await this.prismaService.transaction.create({
+      data: {
+        amount: +createTransactionDto.amount,
+        transactionType: 'RECEIVE',
+        accountId: +accountTo.id,
+        toAccountNumber: accountFrom.accountNumber,
+        description: createTransactionDto.description,
+      },
+    });
+    
+
     return await this.prismaService.transaction.create({
       data: {
         amount: +createTransactionDto.amount,
