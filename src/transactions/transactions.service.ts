@@ -69,7 +69,7 @@ export class TransactionsService {
         transactionType: 'TRANSFER',
         accountId: +accountFrom.id,
         toAccountNumber: accountTo.accountNumber,
-        description: createTransactionDto.description,
+        description: "Transferred to account " + accountTo.accountNumber,
       },
     });
   }
@@ -128,9 +128,9 @@ export class TransactionsService {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    if (account.balance < createTransactionDto.amount) {
-      throw new ForbiddenException('Insufficient funds');
-    }
+    // if (account.balance < createTransactionDto.amount) {
+    //   throw new ForbiddenException('Insufficient funds');
+    // }
 
     await this.prismaService.account.update({
       where: {
@@ -148,6 +148,7 @@ export class TransactionsService {
         amount: +createTransactionDto.amount,
         transactionType: 'DEPOSIT',
         accountId: +account.id,
+        description: "Deposited into the account ",
       },
     });
   }
